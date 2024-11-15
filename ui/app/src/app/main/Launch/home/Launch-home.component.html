@@ -1,0 +1,44 @@
+<o-form-layout-manager attr="Launch" mode="tab" title="LAUNCH">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="LaunchTable" 
+            service="Launch" 
+            entity="Launch" 
+            title="LAUNCH"
+            keys="id"
+            columns="id;mission_id;launch_date;launch_site" 
+            header-actions="R;D"
+            visible-columns="id;mission_id;launch_date;launch_site"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="mission_id" title="mission_id">
+    <o-table-cell-renderer-service attr="mission_id" 
+        service="Mission" entity="MissionType" columns="id;name"
+        parent-keys="id:mission_id"
+        value-column="name" keys="mission_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-date-input #launch_date attr="launch_date" type="timestamp" label="launch_date" editable="no" required="yes" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-column #launch_site attr="launch_site" title="launch_site" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

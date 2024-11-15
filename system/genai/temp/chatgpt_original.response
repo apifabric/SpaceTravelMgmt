@@ -1,0 +1,92 @@
+{
+    "models": [
+        {
+            "classname": "Astronaut",
+            "code": "class Astronaut(Base):\n    \"\"\"description: Table for storing astronaut information\"\"\"\n\n    __tablename__ = 'astronaut'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    nationality = Column(String)\n    mission_count = Column(Integer, default=0)  # Derived for logic rule\n    launch_id = Column(Integer, ForeignKey('launch.id'))",
+            "description": "Table for storing astronaut information",
+            "name": "Astronaut"
+        },
+        {
+            "classname": "Spacecraft",
+            "code": "class Spacecraft(Base):\n    \"\"\"description: Table for storing spacecraft details\"\"\"\n\n    __tablename__ = 'spacecraft'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    model = Column(String)\n    capacity = Column(Integer)",
+            "description": "Table for storing spacecraft details",
+            "name": "Spacecraft"
+        },
+        {
+            "classname": "Mission",
+            "code": "class Mission(Base):\n    \"\"\"description: Table for storing mission details\"\"\"\n\n    __tablename__ = 'mission'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n    scheduled_launch_date = Column(DateTime)\n    duration_days = Column(Integer)\n    mission_status = Column(String)\n    spacecraft_id = Column(Integer, ForeignKey('spacecraft.id'))",
+            "description": "Table for storing mission details",
+            "name": "Mission"
+        },
+        {
+            "classname": "Launch",
+            "code": "class Launch(Base):\n    \"\"\"description: Table for storing launch information\"\"\"\n\n    __tablename__ = 'launch'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    launch_date = Column(DateTime, nullable=False)\n    mission_id = Column(Integer, ForeignKey('mission.id'))\n    launch_site = Column(String)",
+            "description": "Table for storing launch information",
+            "name": "Launch"
+        },
+        {
+            "classname": "MissionCrew",
+            "code": "class MissionCrew(Base):\n    \"\"\"description: Table for storing crew assigned to missions\"\"\"\n\n    __tablename__ = 'mission_crew'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    mission_id = Column(Integer, ForeignKey('mission.id'))\n    astronaut_id = Column(Integer, ForeignKey('astronaut.id'))\n    role = Column(String)",
+            "description": "Table for storing crew assigned to missions",
+            "name": "MissionCrew"
+        },
+        {
+            "classname": "MissionSummary",
+            "code": "class MissionSummary(Base):\n    \"\"\"description: Table for storing mission summaries\"\"\"\n\n    __tablename__ = 'mission_summary'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    mission_id = Column(Integer, ForeignKey('mission.id'))\n    total_astronauts = Column(Integer, default=0)  # Derived for logic rule\n    total_duration = Column(Integer, default=0)    # Derived for logic rule",
+            "description": "Table for storing mission summaries",
+            "name": "MissionSummary"
+        },
+        {
+            "classname": "LaunchIntegrator",
+            "code": "class LaunchIntegrator(Base):\n    \"\"\"description: Table for recording launch integrators and their assignments\"\"\"\n\n    __tablename__ = 'launch_integrator'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    assigned_launch_id = Column(Integer, ForeignKey('launch.id'))",
+            "description": "Table for recording launch integrators and their assignments",
+            "name": "LaunchIntegrator"
+        },
+        {
+            "classname": "AstronautBiography",
+            "code": "class AstronautBiography(Base):\n    \"\"\"description: Table for storing additional biographical details about astronauts\"\"\"\n\n    __tablename__ = 'astronaut_biography'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    astronaut_id = Column(Integer, ForeignKey('astronaut.id'))\n    biography = Column(Text)\n    date_of_birth = Column(Date)",
+            "description": "Table for storing additional biographical details about astronauts",
+            "name": "AstronautBiography"
+        },
+        {
+            "classname": "MissionType",
+            "code": "class MissionType(Base):\n    \"\"\"description: Table for categorizing mission types\"\"\"\n\n    __tablename__ = 'mission_type'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    description = Column(String)",
+            "description": "Table for categorizing mission types",
+            "name": "MissionType"
+        },
+        {
+            "classname": "SpaceSector",
+            "code": "class SpaceSector(Base):\n    \"\"\"description: Table for defining sectors in space for missions\"\"\"\n\n    __tablename__ = 'space_sector'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n    mission_id = Column(Integer, ForeignKey('mission.id'))",
+            "description": "Table for defining sectors in space for missions",
+            "name": "SpaceSector"
+        },
+        {
+            "classname": "SpacecraftComponent",
+            "code": "class SpacecraftComponent(Base):\n    \"\"\"description: Table for detailing spacecraft components\"\"\"\n\n    __tablename__ = 'spacecraft_component'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    spacecraft_id = Column(Integer, ForeignKey('spacecraft.id'))\n    name = Column(String, nullable=False)\n    description = Column(String)\n    maintenance_date = Column(DateTime)",
+            "description": "Table for detailing spacecraft components",
+            "name": "SpacecraftComponent"
+        },
+        {
+            "classname": "AstronautRank",
+            "code": "class AstronautRank(Base):\n    \"\"\"description: Table for managing astronaut ranks\"\"\"\n\n    __tablename__ = 'astronaut_rank'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    rank_name = Column(String, nullable=False)\n    description = Column(String)\n    astronaut_id = Column(Integer, ForeignKey('astronaut.id'))",
+            "description": "Table for managing astronaut ranks",
+            "name": "AstronautRank"
+        }
+    ],
+    "rules": [
+        {
+            "name": "MissionCrewCount",
+            "description": "Ensures the correct number of astronauts are assigned for each mission",
+            "use_case": "Maintaining accurate mission crew counts for tracking resources",
+            "code": "Rule.count(derive=MissionSummary.total_astronauts, as_count_of=MissionCrew)"
+        },
+        {
+            "name": "MissionDurationSum",
+            "description": "Calculates the total mission duration based on planned missions",
+            "use_case": "Summing mission durations for reports and evaluations",
+            "code": "Rule.sum(derive=MissionSummary.total_duration, as_sum_of=Mission.duration_days)"
+        }
+    ],
+    "test_data": "from datetime import date, datetime\n\n# Test Data for Astronaut table\na1 = Astronaut(name=\"John Doe\", nationality=\"American\", mission_count=2, launch_id=1)\na2 = Astronaut(name=\"Anna Smith\", nationality=\"British\", mission_count=3, launch_id=1)\na3 = Astronaut(name=\"Wei Chang\", nationality=\"Chinese\", mission_count=1, launch_id=2)\na4 = Astronaut(name=\"Marco Polo\", nationality=\"Italian\", mission_count=5, launch_id=3)\n\n# Test Data for Spacecraft table\ns1 = Spacecraft(name=\"Explorer One\", model=\"X1\", capacity=5)\ns2 = Spacecraft(name=\"Journey Two\", model=\"J2\", capacity=6)\ns3 = Spacecraft(name=\"Voyager\", model=\"V3\", capacity=8)\ns4 = Spacecraft(name=\"Ranger\", model=\"R4\", capacity=4)\n\n# Test Data for Mission table\nm1 = Mission(name=\"Lunar Mission\", description=\"Exploration of the lunar surface\", scheduled_launch_date=datetime(2023, 12, 1), duration_days=7, mission_status=\"Scheduled\", spacecraft_id=1)\nm2 = Mission(name=\"Mars Reconnaissance\", description=\"Surveying the Martian atmosphere\", scheduled_launch_date=datetime(2023, 11, 17), duration_days=14, mission_status=\"Scheduled\", spacecraft_id=2)\nm3 = Mission(name=\"Asteroid Mining\", description=\"Testing asteroid mining technology\", scheduled_launch_date=datetime(2024, 1, 10), duration_days=30, mission_status=\"Planned\", spacecraft_id=3)\nm4 = Mission(name=\"Jovian Probe\", description=\"Study of Jupiter\", scheduled_launch_date=datetime(2024, 2, 5), duration_days=40, mission_status=\"Planned\", spacecraft_id=4)\n\n# Test Data for Launch table\nl1 = Launch(launch_date=datetime(2023, 12, 1), mission_id=1, launch_site=\"Cape Canaveral\")\nl2 = Launch(launch_date=datetime(2023, 11, 17), mission_id=2, launch_site=\"Vandenberg\")\nl3 = Launch(launch_date=datetime(2024, 1, 10), mission_id=3, launch_site=\"Baikonur\")\nl4 = Launch(launch_date=datetime(2024, 2, 5), mission_id=4, launch_site=\"Tanegashima\")\n\n# Test Data for MissionCrew table\nmc1 = MissionCrew(mission_id=1, astronaut_id=1, role=\"Commander\")\nmc2 = MissionCrew(mission_id=1, astronaut_id=2, role=\"Pilot\")\nmc3 = MissionCrew(mission_id=2, astronaut_id=3, role=\"Mission Specialist\")\nmc4 = MissionCrew(mission_id=3, astronaut_id=4, role=\"Engineer\")\n\n# Test Data for MissionSummary table\nms1 = MissionSummary(mission_id=1, total_astronauts=2, total_duration=7)\nms2 = MissionSummary(mission_id=2, total_astronauts=1, total_duration=14)\nms3 = MissionSummary(mission_id=3, total_astronauts=1, total_duration=30)\nms4 = MissionSummary(mission_id=4, total_astronauts=0, total_duration=0)\n\n# Test Data for LaunchIntegrator table\nli1 = LaunchIntegrator(name=\"James Clark\", assigned_launch_id=1)\nli2 = LaunchIntegrator(name=\"Patricia Lin\", assigned_launch_id=2)\nli3 = LaunchIntegrator(name=\"Sanjay Kumar\", assigned_launch_id=3)\nli4 = LaunchIntegrator(name=\"Wei Li\", assigned_launch_id=4)\n\n# Test Data for AstronautBiography table\nab1 = AstronautBiography(astronaut_id=1, biography=\"First American on Mars.\", date_of_birth=date(1980, 5, 12))\nab2 = AstronautBiography(astronaut_id=2, biography=\"Expert in astrophysics.\", date_of_birth=date(1975, 6, 25))\nab3 = AstronautBiography(astronaut_id=3, biography=\"Veteran pilot and engineer.\", date_of_birth=date(1985, 8, 15))\nab4 = AstronautBiography(astronaut_id=4, biography=\"Renowned geologist.\", date_of_birth=date(1978, 11, 25))\n\n# Test Data for MissionType table\nmt1 = MissionType(name=\"Exploration\", description=\"Scientific exploration missions\")\nmt2 = MissionType(name=\"Colonization\", description=\"Missions aimed at colonizing extraterrestrial bodies\")\nmt3 = MissionType(name=\"Research\", description=\"Advanced research missions in space\")\nmt4 = MissionType(name=\"Defense\", description=\"Space defense and surveillance missions\")\n\n# Test Data for SpaceSector table\nss1 = SpaceSector(name=\"Lunar Orbit\", description=\"Sector around the Moon\", mission_id=1)\nss2 = SpaceSector(name=\"Martian Surface\", description=\"Sector on Mars\", mission_id=2)\nss3 = SpaceSector(name=\"Asteroid Belt\", description=\"Sector within asteroid region\", mission_id=3)\nss4 = SpaceSector(name=\"Jovian System\", description=\"Sector around Jupiter\", mission_id=4)\n\n# Test Data for SpacecraftComponent table\nsc1 = SpacecraftComponent(spacecraft_id=1, name=\"Engine\", description=\"Main propulsion engine\", maintenance_date=datetime(2023, 8, 15))\nsc2 = SpacecraftComponent(spacecraft_id=2, name=\"Navigation System\", description=\"Advanced navigational tech\", maintenance_date=datetime(2023, 9, 20))\nsc3 = SpacecraftComponent(spacecraft_id=3, name=\"Communication Module\", description=\"Long-range comm system\", maintenance_date=datetime(2023, 10, 10))\nsc4 = SpacecraftComponent(spacecraft_id=4, name=\"Life Support\", description=\"Life support and safety systems\", maintenance_date=datetime(2023, 11, 5))\n\n# Test Data for AstronautRank table\nar1 = AstronautRank(rank_name=\"Lieutenant\", description=\"Junior rank\", astronaut_id=1)\nar2 = AstronautRank(rank_name=\"Captain\", description=\"Mid-level rank\", astronaut_id=2)\nar3 = AstronautRank(rank_name=\"Major\", description=\"Senior rank\", astronaut_id=3)\nar4 = AstronautRank(rank_name=\"Colonel\", description=\"Advanced rank\", astronaut_id=4)\n\n",
+    "name": "SpaceTravelMgmt"
+}

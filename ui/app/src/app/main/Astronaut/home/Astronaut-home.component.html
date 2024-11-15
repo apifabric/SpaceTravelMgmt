@@ -1,0 +1,46 @@
+<o-form-layout-manager attr="Astronaut" mode="tab" title="ASTRONAUT">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="AstronautTable" 
+            service="Astronaut" 
+            entity="Astronaut" 
+            title="ASTRONAUT"
+            keys="id"
+            columns="name;launch_id;nationality;mission_count;id" 
+            header-actions="R;D"
+            visible-columns="name;launch_id;nationality;mission_count;id"  
+            sort-columns="name" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column attr="launch_id" title="launch_id">
+    <o-table-cell-renderer-service attr="launch_id" 
+        service="Launch" entity="LaunchType" columns="id;id"
+        parent-keys="id:launch_id"
+        value-column="id" keys="launch_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #nationality attr="nationality" title="nationality" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-column #mission_count attr="mission_count" title="mission_count" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

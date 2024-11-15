@@ -1,0 +1,531 @@
+about:
+  date: November 15, 2024 18:21:23
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Astronaut:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: launch_id
+      template: integer
+      type: INTEGER
+    - name: nationality
+      template: text
+      type: VARCHAR
+    - name: mission_count
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for storing astronaut information
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing astronaut information
+    label: Astronaut
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: AstronautBiographyList
+      resource: AstronautBiography
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: AstronautRankList
+      resource: AstronautRank
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: MissionCrewList
+      resource: MissionCrew
+    - direction: toone
+      fks:
+      - launch_id
+      name: launch
+      resource: Launch
+    type: Astronaut
+  AstronautBiography:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: astronaut_id
+      template: integer
+      type: INTEGER
+    - name: biography
+      template: text
+      type: TEXT
+    - name: date_of_birth
+      type: DATE
+    description: Table for storing additional biographical details about astronauts
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing additional biographical details about astronauts
+    label: AstronautBiography
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    type: AstronautBiography
+  AstronautRank:
+    columns:
+    - label: ' rank_name*'
+      name: rank_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: astronaut_id
+      template: integer
+      type: INTEGER
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for managing astronaut ranks
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: rank_name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for managing astronaut ranks
+    label: AstronautRank
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    type: AstronautRank
+  Launch:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: mission_id
+      template: integer
+      type: INTEGER
+    - name: launch_date
+      required: true
+      type: DATETIME
+    - name: launch_site
+      template: text
+      type: VARCHAR
+    description: Table for storing launch information
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing launch information
+    label: Launch
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - launch_id
+      name: AstronautList
+      resource: Astronaut
+    - direction: tomany
+      fks:
+      - assigned_launch_id
+      name: LaunchIntegratorList
+      resource: LaunchIntegrator
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: Launch
+  LaunchIntegrator:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: assigned_launch_id
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for recording launch integrators and their assignments
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for recording launch integrators and their assignments
+    label: LaunchIntegrator
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - assigned_launch_id
+      name: assigned_launch
+      resource: Launch
+    type: LaunchIntegrator
+  Mission:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: spacecraft_id
+      template: integer
+      type: INTEGER
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: scheduled_launch_date
+      type: DATETIME
+    - name: duration_days
+      template: integer
+      type: INTEGER
+    - name: mission_status
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for storing mission details
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing mission details
+    label: Mission
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - mission_id
+      name: LaunchList
+      resource: Launch
+    - direction: tomany
+      fks:
+      - mission_id
+      name: MissionCrewList
+      resource: MissionCrew
+    - direction: tomany
+      fks:
+      - mission_id
+      name: MissionSummaryList
+      resource: MissionSummary
+    - direction: tomany
+      fks:
+      - mission_id
+      name: SpaceSectorList
+      resource: SpaceSector
+    - direction: toone
+      fks:
+      - spacecraft_id
+      name: spacecraft
+      resource: Spacecraft
+    type: Mission
+  MissionCrew:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: astronaut_id
+      template: integer
+      type: INTEGER
+    - name: mission_id
+      template: integer
+      type: INTEGER
+    - name: role
+      template: text
+      type: VARCHAR
+    description: Table for storing crew assigned to missions
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing crew assigned to missions
+    label: MissionCrew
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: MissionCrew
+  MissionSummary:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: mission_id
+      template: integer
+      type: INTEGER
+    - name: total_astronauts
+      template: integer
+      type: INTEGER
+    - name: total_duration
+      template: integer
+      type: INTEGER
+    description: Table for storing mission summaries
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing mission summaries
+    label: MissionSummary
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: MissionSummary
+  MissionType:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for categorizing mission types
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for categorizing mission types
+    label: MissionType
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: MissionType
+  SpaceSector:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: mission_id
+      template: integer
+      type: INTEGER
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for defining sectors in space for missions
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for defining sectors in space for missions
+    label: SpaceSector
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: SpaceSector
+  Spacecraft:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: model
+      template: text
+      type: VARCHAR
+    - name: capacity
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for storing spacecraft details
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for storing spacecraft details
+    label: Spacecraft
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - spacecraft_id
+      name: MissionList
+      resource: Mission
+    - direction: tomany
+      fks:
+      - spacecraft_id
+      name: SpacecraftComponentList
+      resource: SpacecraftComponent
+    type: Spacecraft
+  SpacecraftComponent:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: spacecraft_id
+      template: integer
+      type: INTEGER
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: maintenance_date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table for detailing spacecraft components
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Table for detailing spacecraft components
+    label: SpacecraftComponent
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - spacecraft_id
+      name: spacecraft
+      resource: Spacecraft
+    type: SpacecraftComponent
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

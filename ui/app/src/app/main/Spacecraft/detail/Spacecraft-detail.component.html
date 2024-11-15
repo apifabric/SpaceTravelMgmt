@@ -1,0 +1,138 @@
+<div class="container">
+<o-form-container breadcrumb="yes" breadcrumb-label-columns="name" breadcrumb-separator=", " class="fill-form">
+      <o-form #form attr="Spacecraft_form_edit" 
+        service="Spacecraft" 
+        entity="Spacecraft" 
+        fxLayout="column" 
+        show-header="yes" 
+        header-actions="R;I;U;D"
+        #oDetailForm keys="id" 
+        keys-sql-types="INTEGER" 
+        show-header-navigation="yes"
+        (onDataLoaded)="onDataLoaded($event)">
+
+  <o-row attr="row1" layout-align="start stretch">
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+      
+      <o-text-input #name attr="name" label=" name*" enabled="yes" required="yes" fxFlex="20%" class="form-field"></o-text-input>
+      
+      <o-text-input #model attr="model" label="model" enabled="yes" required="no" fxFlex="20%" class="form-field"></o-text-input>
+      
+      <o-integer-input #capacity attr="capacity" label="capacity" type="integer" editable="no" required="no" ></o-integer-input>
+      
+      <o-integer-input #id attr="id" label="id" type="integer" editable="no" required="no" ></o-integer-input>
+      
+    </div>
+  </o-row>
+      
+      <mat-tab-group fxFill>
+        
+        <mat-tab label="MISSION-spacecraft_id">
+    <div layout-padding>
+      <o-table 
+        attr="MissionTable" 
+        service="Mission" 
+        entity="Mission" 
+        keys="id"
+        parent-keys="spacecraft_id:id"
+        columns="name;spacecraft_id;description;scheduled_launch_date;duration_days;mission_status;id"  
+        horizontal-scroll="yes"
+        detail-form-route="Mission" 
+        edit-form-route="Mission"
+        visible-columns="name;spacecraft_id;description;scheduled_launch_date;duration_days;mission_status;id"  
+        sort-columns="name" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+        
+          <o-table-column attr="spacecraft_id" title="spacecraft_id">
+    <o-table-cell-renderer-service attr="spacecraft_id" 
+        service="Spacecraft" entity="SpacecraftType" columns="id;name"
+        parent-keys="id:spacecraft_id"
+        value-column="name" keys="spacecraft_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #description attr="description" title="description" editable="no" required="no" content-align="left"></o-table-column>
+        
+          <o-date-input #scheduled_launch_date attr="scheduled_launch_date" type="timestamp" label="scheduled_launch_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+        
+          <o-table-column #duration_days attr="duration_days" title="duration_days" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column #mission_status attr="mission_status" title="mission_status" editable="no" required="no" content-align="left"></o-table-column>
+        
+          <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+        <mat-tab label="SPACECRAFTCOMPONENT-spacecraft_id">
+    <div layout-padding>
+      <o-table 
+        attr="SpacecraftComponentTable" 
+        service="SpacecraftComponent" 
+        entity="SpacecraftComponent" 
+        keys="id"
+        parent-keys="spacecraft_id:id"
+        columns="name;spacecraft_id;description;maintenance_date;id"  
+        horizontal-scroll="yes"
+        detail-form-route="SpacecraftComponent" 
+        edit-form-route="SpacecraftComponent"
+        visible-columns="name;spacecraft_id;description;maintenance_date;id"  
+        sort-columns="name" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+        
+          <o-table-column attr="spacecraft_id" title="spacecraft_id">
+    <o-table-cell-renderer-service attr="spacecraft_id" 
+        service="Spacecraft" entity="SpacecraftType" columns="id;name"
+        parent-keys="id:spacecraft_id"
+        value-column="name" keys="spacecraft_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #description attr="description" title="description" editable="no" required="no" content-align="left"></o-table-column>
+        
+          <o-date-input #maintenance_date attr="maintenance_date" type="timestamp" label="maintenance_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+        
+          <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+      </mat-tab-group>
+      
+    </o-form>
+  </o-form-container>
+</div>

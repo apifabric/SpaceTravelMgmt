@@ -1,0 +1,335 @@
+about:
+  date: November 15, 2024 18:21:23
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 11
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Astronaut:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: launch_id
+    - name: nationality
+    - name: mission_count
+    - name: id
+    description: Table for storing astronaut information
+    info_list: Table for storing astronaut information
+    tab_groups:
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: AstronautBiographyList
+      resource: AstronautBiography
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: AstronautRankList
+      resource: AstronautRank
+    - direction: tomany
+      fks:
+      - astronaut_id
+      name: MissionCrewList
+      resource: MissionCrew
+    - direction: toone
+      fks:
+      - launch_id
+      name: launch
+      resource: Launch
+    type: Astronaut
+    user_key: name
+  AstronautBiography:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: astronaut_id
+    - name: biography
+    - name: date_of_birth
+      type: DATE
+    description: Table for storing additional biographical details about astronauts
+    info_list: Table for storing additional biographical details about astronauts
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    type: AstronautBiography
+    user_key: id
+  AstronautRank:
+    attributes:
+    - label: ' rank_name*'
+      name: rank_name
+      required: true
+      search: true
+      sort: true
+    - name: astronaut_id
+    - name: description
+    - name: id
+    description: Table for managing astronaut ranks
+    info_list: Table for managing astronaut ranks
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    type: AstronautRank
+    user_key: rank_name
+  Launch:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: mission_id
+    - name: launch_date
+      required: true
+      type: DATETIME
+    - name: launch_site
+    description: Table for storing launch information
+    info_list: Table for storing launch information
+    tab_groups:
+    - direction: tomany
+      fks:
+      - launch_id
+      name: AstronautList
+      resource: Astronaut
+    - direction: tomany
+      fks:
+      - assigned_launch_id
+      name: LaunchIntegratorList
+      resource: LaunchIntegrator
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: Launch
+    user_key: id
+  LaunchIntegrator:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: assigned_launch_id
+    - name: id
+    description: Table for recording launch integrators and their assignments
+    info_list: Table for recording launch integrators and their assignments
+    tab_groups:
+    - direction: toone
+      fks:
+      - assigned_launch_id
+      name: assigned_launch
+      resource: Launch
+    type: LaunchIntegrator
+    user_key: name
+  Mission:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: spacecraft_id
+    - name: description
+    - name: scheduled_launch_date
+      type: DATETIME
+    - name: duration_days
+    - name: mission_status
+    - name: id
+    description: Table for storing mission details
+    info_list: Table for storing mission details
+    tab_groups:
+    - direction: tomany
+      fks:
+      - mission_id
+      name: LaunchList
+      resource: Launch
+    - direction: tomany
+      fks:
+      - mission_id
+      name: MissionCrewList
+      resource: MissionCrew
+    - direction: tomany
+      fks:
+      - mission_id
+      name: MissionSummaryList
+      resource: MissionSummary
+    - direction: tomany
+      fks:
+      - mission_id
+      name: SpaceSectorList
+      resource: SpaceSector
+    - direction: toone
+      fks:
+      - spacecraft_id
+      name: spacecraft
+      resource: Spacecraft
+    type: Mission
+    user_key: name
+  MissionCrew:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: astronaut_id
+    - name: mission_id
+    - name: role
+    description: Table for storing crew assigned to missions
+    info_list: Table for storing crew assigned to missions
+    tab_groups:
+    - direction: toone
+      fks:
+      - astronaut_id
+      name: astronaut
+      resource: Astronaut
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: MissionCrew
+    user_key: id
+  MissionSummary:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: mission_id
+    - name: total_astronauts
+    - name: total_duration
+    description: Table for storing mission summaries
+    info_list: Table for storing mission summaries
+    tab_groups:
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: MissionSummary
+    user_key: id
+  MissionType:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: id
+    description: Table for categorizing mission types
+    info_list: Table for categorizing mission types
+    type: MissionType
+    user_key: name
+  SpaceSector:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: mission_id
+    - name: description
+    - name: id
+    description: Table for defining sectors in space for missions
+    info_list: Table for defining sectors in space for missions
+    tab_groups:
+    - direction: toone
+      fks:
+      - mission_id
+      name: mission
+      resource: Mission
+    type: SpaceSector
+    user_key: name
+  Spacecraft:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: model
+    - name: capacity
+    - name: id
+    description: Table for storing spacecraft details
+    info_list: Table for storing spacecraft details
+    tab_groups:
+    - direction: tomany
+      fks:
+      - spacecraft_id
+      name: MissionList
+      resource: Mission
+    - direction: tomany
+      fks:
+      - spacecraft_id
+      name: SpacecraftComponentList
+      resource: SpacecraftComponent
+    type: Spacecraft
+    user_key: name
+  SpacecraftComponent:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: spacecraft_id
+    - name: description
+    - name: maintenance_date
+      type: DATETIME
+    - name: id
+    description: Table for detailing spacecraft components
+    info_list: Table for detailing spacecraft components
+    tab_groups:
+    - direction: toone
+      fks:
+      - spacecraft_id
+      name: spacecraft
+      resource: Spacecraft
+    type: SpacecraftComponent
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,147 @@
+<div class="container">
+<o-form-container breadcrumb="yes" breadcrumb-label-columns="id" breadcrumb-separator=", " class="fill-form">
+      <o-form #form attr="Launch_form_edit" 
+        service="Launch" 
+        entity="Launch" 
+        fxLayout="column" 
+        show-header="yes" 
+        header-actions="R;I;U;D"
+        #oDetailForm keys="id" 
+        keys-sql-types="INTEGER" 
+        show-header-navigation="yes"
+        (onDataLoaded)="onDataLoaded($event)">
+
+  <o-row attr="row1" layout-align="start stretch">
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+      
+      <o-integer-input #id attr="id" label=" id*" type="integer" editable="no" required="no" ></o-integer-input>
+      
+      <o-list-picker 
+        attr="mission_id"
+        service="Mission" 
+        entity="MissionType"
+        fxFlex="30" 
+        query-on-init="no" 
+        query-on-bind="yes" 
+        required="no" 
+        enabled="yes" 
+        filter="yes"
+        value-column="id" 
+        value-column-type="INTEGER"  
+        keys="id" 
+        columns="id;mission_id;name" 
+        title="mission_id"
+        visible-columns="id;name" 
+        separator=" - " width="680px" class="form-field">
+</o-list-picker>
+      
+      <o-date-input #launch_date attr="launch_date" type="timestamp" label="launch_date" editable="no" required="yes" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+      
+      <o-text-input #launch_site attr="launch_site" label="launch_site" enabled="yes" required="no" fxFlex="20%" class="form-field"></o-text-input>
+      
+    </div>
+  </o-row>
+      
+      <mat-tab-group fxFill>
+        
+        <mat-tab label="ASTRONAUT-launch_id">
+    <div layout-padding>
+      <o-table 
+        attr="AstronautTable" 
+        service="Astronaut" 
+        entity="Astronaut" 
+        keys="id"
+        parent-keys="launch_id:id"
+        columns="name;launch_id;nationality;mission_count;id"  
+        horizontal-scroll="yes"
+        detail-form-route="Astronaut" 
+        edit-form-route="Astronaut"
+        visible-columns="name;launch_id;nationality;mission_count;id"  
+        sort-columns="name" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+        
+          <o-table-column attr="launch_id" title="launch_id">
+    <o-table-cell-renderer-service attr="launch_id" 
+        service="Launch" entity="LaunchType" columns="id;id"
+        parent-keys="id:launch_id"
+        value-column="id" keys="launch_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #nationality attr="nationality" title="nationality" editable="no" required="no" content-align="left"></o-table-column>
+        
+          <o-table-column #mission_count attr="mission_count" title="mission_count" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+        <mat-tab label="LAUNCHINTEGRATOR-assigned_launch_id">
+    <div layout-padding>
+      <o-table 
+        attr="LaunchIntegratorTable" 
+        service="LaunchIntegrator" 
+        entity="LaunchIntegrator" 
+        keys="id"
+        parent-keys="assigned_launch_id:id"
+        columns="name;assigned_launch_id;id"  
+        horizontal-scroll="yes"
+        detail-form-route="LaunchIntegrator" 
+        edit-form-route="LaunchIntegrator"
+        visible-columns="name;assigned_launch_id;id"  
+        sort-columns="name" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+        
+          <o-table-column attr="assigned_launch_id" title="assigned_launch_id">
+    <o-table-cell-renderer-service attr="assigned_launch_id" 
+        service="Launch" entity="LaunchType" columns="id;id"
+        parent-keys="id:assigned_launch_id"
+        value-column="id" keys="assigned_launch_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+      </mat-tab-group>
+      
+    </o-form>
+  </o-form-container>
+</div>
